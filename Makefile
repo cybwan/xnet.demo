@@ -35,18 +35,6 @@ ifeq ($(strip $(EP_MAC)),)
 	EP_MAC = $(GW_MAC)
 endif
 
-.PHONY: install-pipy
-install-pipy:
-	curl -L https://github.com/flomesh-io/pipy/releases/download/1.5.10/pipy-1.5.10-generic_linux-x86_64.tar.gz -o /tmp/pipy.tar.gz
-	cd /tmp;tar zxf pipy.tar.gz;cp usr/local/bin/pipy /usr/local/bin/;rm -rf pipy.tar.gz
-
-.PHONY: run-pipy-services
-run-pipy-services:
-	@sudo nohup pipy -e 'var $msg;pipy.listen("[::]:8081", $=>$.onStart(i => {$msg=`The service is demo1 ! request.remoteAddress: ${i.remoteAddress} request.remotePort:${i.remotePort}\n`}).serveHTTP(() => new Message($msg)))' > /dev/null 2>&1 &
-	@sudo nohup pipy -e "pipy().listen('192.168.127.177:8080').serveHTTP(new Message('hi, it works as 192.168.127.177:8080.\n'))" > /dev/null 2>&1 &
-	@sudo nohup pipy -e "pipy().listen('192.168.127.178:8080').serveHTTP(new Message('hi, it works as 192.168.127.178:8080.\n'))" > /dev/null 2>&1 &
-	@sudo nohup pipy -e "pipy().listen('192.168.127.179:8080').serveHTTP(new Message('hi, it works as 192.168.127.179:8080.\n'))" > /dev/null 2>&1 &
-
 .PHONY: kern-trace
 kern-trace:
 	@clear

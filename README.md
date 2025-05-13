@@ -96,9 +96,9 @@ Flags:
 
 ##### 1.2.1.1 基本模式 (normal)
 
-对入向请求采用简单的DNAT（目标网络地址转换），对于出向响应则执行相反的操作（SNAT，源网络地址转换）。
+对入向请求采用DNAT（目标网络地址转换），对于出向响应则执行相反的操作SNAT（源网络地址转换）。
 
-此模式下，原始源IP地址会一直保留至终端节点，需要终端节点需要具备可达源地址的路由能力。
+此模式下，原始源IP地址会一直保留至终端节点，需要终端节点具备可达源地址的路由能力。
 
 ##### 1.2.1.2 单臂模式 (onearm)
 
@@ -323,7 +323,11 @@ sudo nohup pipy -e 'var $msg;pipy.listen("192.168.127.183:8083", $=>$.onStart(i 
 
 sudo nohup pipy -e 'var $msg;pipy.listen("192.168.127.184:8084", $=>$.onStart(i => {$msg=`The service is demo4 ! request.remoteAddress: ${i.remoteAddress} request.remotePort:${i.remotePort}\n`}).serveHTTP(() => new Message($msg)))' > /dev/null 2>&1 &
 
-#只接受域名后缀为cluster.local的 DNS 请求,且解析都返回 1.1.1.1
+```
+
+**在server节点 上启动 DNS DEMO 服务: 只接受域名后缀为cluster.local的 DNS 请求,且解析都返回 1.1.1.1**
+
+```bash
 sudo nohup dnsd server --laddr=0.0.0.0:1153 --trust-domain=cluster.local --wildcard-a-addr=1.1.1.1 > /dev/null 2>&1 &
 ```
 
